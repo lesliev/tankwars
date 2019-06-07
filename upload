@@ -1,0 +1,2 @@
+scp * leslieviljoen.com:/home/lesliev/lesismore/public/assets/tanks
+echo "open http://leslieviljoen.com/assets/tanks/index.html"

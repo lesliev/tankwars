@@ -1,0 +1,137 @@
+
+
+var keys = {};
+var state = 'menu';
+var canvasWidth = 1802;
+var canvasHeight = 900;
+var background = new Image();
+
+var tankTypes = [
+  {name: 'hotchkiss', fileName: 'hotchkiss.png'}, 
+  {name: 'panther',   fileName: 'panther.png'}, 
+  {name: 'panzer',    fileName: 'panzer.png'}, 
+  {name: 't34',       fileName: 't34.png'}
+]
+
+
+var tanks = [
+  {
+    type: tankTypes[0],
+    image: new Image(),
+    x: canvasWidth/4,
+    y: canvasHeight - canvasHeight/4,
+    r: 0
+  },
+  {
+    type: tankTypes[2],
+    image: new Image(),
+    x: canvasWidth - canvasWidth/4,
+    y: canvasHeight - canvasHeight/4,
+    r: 0
+  }
+]
+
+
+window.onkeyup = function(e) { 
+  console.log("key up: ", e.keyCode);
+  keys[e.keyCode] = false; 
+}
+
+window.onkeydown = function(e) { 
+  console.log("key down: ", e.keyCode);
+  keys[e.keyCode] = true; 
+}
+
+function init() {
+
+  for(i = 0; i < 2; i+=1) {
+    tanks[i].image.src = tanks[i].type.fileName;
+  }
+
+  background.src = 'infinigrass.jpg';
+
+  window.requestAnimationFrame(draw);
+}
+
+function rotateAndPaintImage ( context, image, angleInRad , positionX, positionY, axisX, axisY ) {
+  context.translate( positionX, positionY );
+  context.rotate( angleInRad );
+  context.drawImage( image, -axisX, -axisY );
+  context.rotate( -angleInRad );
+  context.translate( -positionX, -positionY );
+}
+
+function draw() {
+  var canvas = document.getElementById("tankscene");
+  var ctx = canvas.getContext("2d");
+
+  ctx.globalCompositeOperation = 'destination-under';
+      
+  ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+  ctx.beginPath();
+  ctx.rect(0, 0, canvasWidth, canvasHeight);
+  ctx.fillStyle = "#66c2ff";
+  ctx.fill();
+  ctx.closePath();
+
+  ctx.drawImage(background, 0, 0);
+  
+  if(state == 'menu') {
+    if((keys[32] == true))
+    {
+      // reset
+      state = 'playing';
+    }
+    else
+    {
+      ctx.font = "32px Georgia";
+      ctx.fillStyle = "white";
+      ctx.fillText("Press Space to play", (canvasWidth/2)-150, canvasHeight/2);
+      // do nothing
+    }
+  } else {
+
+    if((keys[37] == true)) { tanks[1].r -= 0.1; console.log(tanks[1].r); }
+    if((keys[39] == true)) { tanks[1].r += 0.1; }
+    
+
+    // if((keys[38] == true)) { tanks[1].y -= 0.7; }
+    // if((keys[40] == true)) { tanks[1].y += 0.7; }
+
+    // forward
+    if((keys[38] == true) || (keys[40] == true)) { 
+      x_delta = 3 * (Math.sin(tanks[1].r));
+      y_delta = 3 * (- Math.cos(tanks[1].r));
+      
+      if ((keys[38] == true)) {
+        tanks[1].y += y_delta; 
+        tanks[1].x += x_delta;
+      }
+
+      if ((keys[40] == true)) {
+        tanks[1].y -= y_delta; 
+        tanks[1].x -= x_delta;
+      }
+
+      console.log("r", tanks[1].r);
+      console.log("xd", x_delta);
+      console.log("yd", y_delta);
+    }
+
+    
+    for(tankNumber = 0; tankNumber < 2; tankNumber++) {
+      rotateAndPaintImage(ctx, tanks[tankNumber].image, tanks[tankNumber].r, 
+        tanks[tankNumber].x, tanks[tankNumber].y, 
+        17, 36.5)
+    }
+
+    // 
+
+    // draw game here
+  }
+
+  window.requestAnimationFrame(draw);
+}
+
+init();
