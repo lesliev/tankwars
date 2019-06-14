@@ -5,6 +5,7 @@ var state = 'menu';
 var canvasWidth = 1802;
 var canvasHeight = 900;
 var background = new Image();
+var crashSound = new Audio('crash.mp3');
 
 var tankTypes = [
   {name: 'hotchkiss', fileName: 'hotchkiss.png'}, 
@@ -93,6 +94,22 @@ function draw() {
       // do nothing
     }
   } else {
+
+    // if(close){
+    //   crashSound.play();
+    // }
+
+    distance = 
+      Math.sqrt(
+        ((tanks[1].x - tanks[0].x) * (tanks[1].x - tanks[0].x)) +
+        ((tanks[1].y - tanks[0].y) * (tanks[1].y - tanks[0].y))
+      )
+
+    if(distance < 30){
+      crashSound.play();
+    }
+
+    console.log(distance);
 
     if((keys[37] == true)) { tanks[1].r -= 0.1; }
     if((keys[39] == true)) { tanks[1].r += 0.1; }
