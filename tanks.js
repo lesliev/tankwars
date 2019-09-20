@@ -122,7 +122,7 @@ function draw() {
     {
       ctx.fillStyle = "White";
       ctx.font = "92px Arial";
-      ctx.fillText("Tank Wars!", (canvasWidth/2)-180, canvasHeight/4);
+      ctx.fillText("Apple Wars!", (canvasWidth/2)-180, canvasHeight/4);
       ctx.font = "62px Arial";
       ctx.fillText("Player 1: WASD/space  Player 2: Arrows/P", (canvasWidth/2)-500, canvasHeight/3);
       ctx.fillText("Press Enter to play", (canvasWidth/2)-225, canvasHeight/2);
