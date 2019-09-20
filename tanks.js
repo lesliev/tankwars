@@ -120,11 +120,29 @@ function draw() {
     }
     else
     {
-      ctx.font = "32px Georgia";
-      ctx.fillStyle = "white";
-      ctx.fillText("Press Enter to play", (canvasWidth/2)-150, canvasHeight/2);
+      ctx.fillStyle = "White";
+      ctx.font = "92px Arial";
+      ctx.fillText("Tank Wars!", (canvasWidth/2)-180, canvasHeight/4);
+      ctx.font = "62px Arial";
+      ctx.fillText("Player 1: WASD/space  Player 2: Arrows/P", (canvasWidth/2)-500, canvasHeight/3);
+      ctx.fillText("Press Enter to play", (canvasWidth/2)-225, canvasHeight/2);
       // do nothing
     }
+  }
+  else if(state == 'death') {
+    ctx.font = "62px Arial";
+    ctx.fillStyle = "White";
+
+
+    if(tanks[0].health < 1) {
+      ctx.fillText("Player 1 died!", (canvasWidth/2)-170, canvasHeight/3);
+    }
+    if(tanks[1].health < 1) {
+      ctx.fillText("Player 2 died!", (canvasWidth/2)-170, canvasHeight/3);
+    }
+
+    ctx.fillText("Press F5 to play again", (canvasWidth/2)-275, canvasHeight/2);
+    // do nothing
   } else {
 
     distance = 
@@ -207,6 +225,7 @@ function draw() {
             tanks[i].health -= 1;
             if (tanks[i].health < 1) {
               boomSound.play();
+              state = 'death';
             }
           }
         }
